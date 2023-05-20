@@ -138,6 +138,11 @@ public:
     // Ensure attitude controller have zero errors to relax rate controller output
     void relax_attitude_controllers();
 
+    virtual void reset_H_inf();
+    virtual void set_yaw_target_to_current_heading();
+    virtual void input_euler_angle_roll_pitch_euler_rate_yaw_mu(float euler_roll_angle_cd, float euler_pitch_angle_cd, float euler_yaw_rate_cds, float roll, float pitch, float yaw, float thrustRef);
+    virtual void get_rpyt_mu(float& rollCommand, float& pitchCommand, float& yawCommand, float& thrustCommand);
+
     // Used by child class AC_AttitudeControl_TS to change behaviour for tailsitter quadplanes
     virtual void relax_attitude_controllers(bool exclude_pitch) { relax_attitude_controllers(); }
 
@@ -545,6 +550,7 @@ protected:
     AP_Motors&          _motors;
 
     static AC_AttitudeControl *_singleton;
+
 
 protected:
     /*

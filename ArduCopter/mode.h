@@ -39,7 +39,7 @@ public:
         AUTOROTATE =   26,  // Autonomous autorotation
         AUTO_RTL =     27,  // Auto RTL, this is not a true mode, AUTO will report as this mode if entered to perform a DO_LAND_START Landing sequence
         TURTLE =       28,  // Flip over after crash
-
+        TEST = 29,          //mode to test new flight controllers implemented in ros
         // Mode number 127 reserved for the "drone show mode" in the Skybrush
         // fork at https://github.com/skybrush-io/ardupilot
     };
@@ -1498,7 +1498,6 @@ public:
     // inherit constructor
     using Mode::Mode;
     Number mode_number() const override { return Number::STABILIZE; }
-
     virtual void run() override;
 
     bool requires_GPS() const override { return false; }
@@ -1516,6 +1515,31 @@ protected:
 
 private:
 
+};
+
+class ModeTest : public Mode {
+
+public:
+    // inherit constructor
+    using Mode::Mode;
+    Number mode_number() const override { return Number::TEST; }
+
+    void run() override;
+    bool init(bool ignore_checks) override;
+
+
+    // bool requires_GPS() const override { return false; }
+    // bool has_manual_throttle() const override { return true; }
+    // bool allows_arming(bool from_gcs){ return true; }
+    // bool is_autopilot() const override { return false; }
+
+protected:
+
+    const char *name() const override { return "TEST"; }
+    const char *name4() const override { return "TEST"; }
+
+private:
+    int count = 0;
 };
 
 #if FRAME_CONFIG == HELI_FRAME
